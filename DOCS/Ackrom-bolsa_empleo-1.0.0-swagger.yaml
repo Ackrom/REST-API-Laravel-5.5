@@ -1,0 +1,769 @@
+openapi: 3.0.0
+# Added by API Auto Mocking Plugin
+servers:
+# Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/Ackrom/bolsa_empleo/1.0.0
+  - description: API REST de una bolsa de empleo
+    url: https://app.swaggerhub.com/Ackrom/bolsa_empleo/1.0.0
+info:
+  description: This is a simple API
+  version: "1.0.0"
+  title: API de una bolsa de empleo
+  contact:
+    email: marco.at720@gmail.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+paths:
+  /usuario:
+    get:
+      tags:
+        - usuario
+      summary: mostrar todos los usarios
+      operationId: getUsuarios
+      description: |
+        Muestra todos los usuarios registrados en el sistema
+      parameters:
+        - in: query
+          name: limit
+          description: número máximo de filas a retornar
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            maximum: 50
+      responses:
+        '200':
+          description: Muestra todos los usuarios según un limite
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Usuario'
+          links:
+            curriculums:
+              $ref: '#/components/schemas/Curriculum'
+            empresas:
+              $ref: '#/components/schemas/Empresa'
+            postulaciones:
+              $ref: '#/components/schemas/Postulacion'
+        '400':
+          description: Parámetros de entrada inválidos
+        
+    post:
+      tags:
+        - usuario
+      summary: Crear un nuevo usuario
+      operationId: addUsuario
+      description: Crea un nuevo usuario
+      responses:
+        '201':
+          description: Usuario creado
+        '400':
+          description: 'invalid input, object invalid'
+        '409':
+          description: ya existe el usuario
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+        description: Datos del nuevo usuario
+    put:
+      tags:
+        - usuario
+      summary: Permite modificar datos del usuario
+      responses:
+        '200':
+          description: 'Usuario creado'
+        '400':
+          description: 'Operación inválida'
+    delete:
+      tags:
+      - usuario
+      summary: Permite eliminar al usuario
+      responses:
+        '200':
+          description: 'usuario eliminado'
+        '400':
+          description: 'Operación inválida'
+  /usuario/{user_id}/curriculum:
+    parameters:
+      - name: 'user_id'
+        in: path
+        required: true
+        schema:
+          type: number
+    
+    get:
+      tags:
+        - curriculum
+      summary: Mostrar todos los curriculums del usuario
+      operationId: getCurriculum
+      description: |
+        Muestra el o los curriculums del usuario seleccionado
+      parameters:
+        - in: query
+          name: limit
+          description: maximum number of records to return
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            maximum: 50
+      responses:
+        '200':
+          description: Muestra todos los curriculums según un limite
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Curriculum'
+          links:
+            usuario:
+              $ref: '#/components/schemas/Usuario'
+        '400':
+          description: Parámetros de entrada inválidos
+        
+    post:
+      tags:
+        - curriculum
+      summary: Publica un nuevo curriculum
+      operationId: addCurriculum
+      description: Permite añadir un nuevo curriculum
+      responses:
+        '201':
+          description: Operación exitosa
+        '400':
+          description: 'Entrada inválida, objeto inválido'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Curriculum'
+    put:
+      tags:
+        - curriculum
+      summary: Permite modificar el curriculum
+      responses:
+        '200':
+          description: 'Curriculum modificado'
+        '400':
+          description: 'Operación inválida'
+    delete:
+      tags:
+      - curriculum
+      summary: Permite eliminar el curriculum
+      responses:
+        '200':
+          description: 'curriculum eliminado'
+        '400':
+          description: 'Operación inválida'
+  /usuario/{user_id}/empresa:
+    parameters:
+      - name: 'user_id'
+        in: path
+        required: true
+        schema:
+          type: number
+    post:
+      tags:
+        - empresa
+      summary: Crea una nueva empresa
+      operationId: addEmpresa
+      description: Permite crear una nueva empresa
+      responses:
+        '201':
+          description: Operación exitosa
+        '400':
+          description: 'Entrada inválida, objeto inválido'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Empresa'
+    get:
+      tags:
+        - empresa
+      summary: Muestra las empresas del usuario
+      responses:
+        '200':
+          description: Muestra las empresas del usuario
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Empresa'
+          links:
+            usuario:
+              $ref: '#/components/schemas/Usuario'
+            vacantes:
+              $ref: '#/components/schemas/Vacantes'
+    put:
+      tags:
+        - empresa
+      summary: Permite modificar datos de la empresa
+      responses:
+        '200':
+          description: 'Empresa modificada'
+        '400':
+          description: 'Operación inválida'
+    delete:
+      tags:
+      - empresa
+      summary: Permite eliminar una empresa
+      responses:
+        '200':
+          description: 'empresa eliminada'
+        '400':
+          description: 'Operación inválida'
+
+  /usuario/{user_id}/vacante:
+    parameters:
+      - name: 'user_id'
+        in: path
+        required: true
+        schema:
+          type: number
+    get:
+      tags:
+        - vacante
+      summary: Muestra las vacantes a las que se ha postulado el usuario
+      responses:
+        '200':
+          description: Muestra a que vacantes se ha postulado el usuario
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Vacantes'
+          links:
+            postulaciones:
+              $ref: '#/components/schemas/Postulacion'
+            empresa:
+              $ref: '#/components/schemas/Empresa'
+            cargos:
+              $ref: '#/components/schemas/Cargos'
+            areas:
+              $ref: '#/components/schemas/Areas'
+
+  /usuario/{user_id}:
+    parameters:
+      - name: 'user_id'
+        in: path
+        required: true
+        schema:
+          type: number
+    get:
+      tags: 
+        - usuario
+      summary: Muestra los datos de un solo usuario
+      responses:
+        '200':
+          description: Muestra los datos de un usuario en particular
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Usuario'
+          links:
+            usuario:
+              $ref: '#/components/schemas/Curriculum'
+            postulaciones:
+              $ref: '#/components/schemas/Postulacion'
+            empresas:
+              $ref: '#/components/schemas/Empresa'
+  /postulacion/{postulacion_id}:
+    parameters:
+      - name: 'postulacion_id'
+        in: path
+        required: true
+        schema:
+          type: number
+    get:
+      tags: 
+        - postulacion
+      summary: Muestra una postulacion
+      responses:
+        '200':
+          description: MUestra una postulación
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Postulacion'
+          links:
+            usuario:
+              $ref: '#/components/schemas/Usuario'
+            vacantes:
+              $ref: '#/components/schemas/Vacantes'
+
+  /curriculum/{curriculum_id}:
+    parameters:
+      - name: 'curriculum_id'
+        in: path
+        required: true
+        schema:
+          type: number
+    get:
+      tags:
+        - curriculum
+      summary: Arroja los datos de un curriculum
+      responses:
+        '200':
+          description: Muestra un curriculum
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Curriculum'
+          links:
+            usuario:
+              $ref: '#/components/schemas/Usuario'
+  /curriculum/{curriculum_id}/usuario:
+    parameters:
+      - name: 'curriculum_id'
+        in: path
+        required: true
+        schema:
+          type: number
+    get:
+      tags:
+        - usuario
+      summary: Retorna el usuario en base al curriculum
+      responses:
+        '200':
+          description: Retorna los datos del usuario
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Curriculum'
+          links:
+            usuario:
+              $ref: '#/components/schemas/Usuario'  
+  
+  /empresa/{empresa_id}:
+    parameters:
+      - name: 'empresa_id'
+        in: path
+        required: true
+        schema:
+          type: number
+    get:
+      tags:
+        - empresa
+      summary: Retorna los datos de una empresa
+      responses:
+        '200':
+          description: Retorna los datos de una empresa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Empresa'
+          links:
+            usuarios:
+              $ref: '#/components/schemas/Usuario'
+            vacantes:
+              $ref: '#/components/schemas/Vacantes'
+  /empresa/{empresa_id}/usuario:
+    parameters:
+      - name: 'empresa_id'
+        in: path
+        required: true
+        schema:
+          type: number
+    get:
+      tags:
+        - usuario
+      summary: Retorna un usuario en base a la empresa
+      responses:
+        '200':
+          description: Retorna los datos de un usuario en base a la empresa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Usuario'
+          links:
+            empresa:
+              $ref: '#/components/schemas/Empresa'
+            vacantes:
+              $ref: '#/components/schemas/Vacantes'
+            curriculums:
+              $ref: '#/components/schemas/Curriculum'
+  /empresa/{empresa_id}/vacante:
+    parameters:
+      - name: 'empresa_id'
+        in: path
+        required: true
+        schema:
+          type: number
+    post:
+      tags:
+        - vacante
+      summary: Permite Crear una vacante
+      operationId: addVacante
+      description: Permite crear una vacante
+      responses:
+        '201':
+          description: Operación exitosa
+        '400':
+          description: 'Entrada inválida, objeto inválido'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vacantes'
+    get:
+      tags:
+        - vacante
+      summary: Retorna las vacantes de una empresa
+      responses:
+        '200':
+          description: Retorna un listado de vacantes, con sus datos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Vacantes'
+          links:
+            empresa:
+              $ref: '#/components/schemas/Empresa'
+            postulaciones:
+              $ref: '#/components/schemas/Postulacion'
+            Areas:
+              $ref: '#/components/schemas/Areas'
+            Cargos:
+              $ref: '#/components/schemas/Cargos'
+  
+  /vacante/{vacante_id}:
+    parameters:
+      - name: 'vacante_id'
+        in: path
+        required: true
+        schema:
+          type: number
+    post:
+      tags:
+        - vacante
+      summary: Permite a un usuario postularse a una vacante
+      operationId: addPostulacion
+      description: Permite postularse a una vacante
+      responses:
+        '201':
+          description: Operación exitosa
+        '400':
+          description: 'Entrada inválida, objeto inválido'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Postulacion'
+    get:
+      tags:
+        - vacante
+      summary: Retorna la información de una vacante
+      responses:
+        '200':
+          description: Retorna una vacante en específico
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Vacantes'
+          links:
+            empresa:
+              $ref: '#/components/schemas/Empresa'
+            postulaciones:
+              $ref: '#/components/schemas/Postulacion'
+            Areas:
+              $ref: '#/components/schemas/Areas'
+            Cargos:
+              $ref: '#/components/schemas/Cargos'
+  /vacante/{vacante_id}/cargo:
+    parameters:
+      - name: 'vacante_id'
+        in: path
+        required: true
+        schema:
+          type: number
+    get:
+      tags:
+        - cargo
+      summary: Retorna los cargos en base a una vacante
+      responses:
+        '200':
+          description: Retorna los cargos asociados a la vacante
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cargos'
+          links:
+            Vacantes:
+              $ref: '#/components/schemas/Vacantes'
+            
+  /vacante/{vacante_id}/area:
+    parameters:
+      - name: 'vacante_id'
+        in: path
+        required: true
+        schema:
+          type: number
+    get:
+      tags:
+        - area
+      summary: Retorna las areas de la vacante
+      responses:
+        '200':
+          description: Retorna las areas asociadas a la vacante
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Areas'
+          links:
+            vacantes:
+              $ref: '#/components/schemas/Vacantes'
+  /vacante/{vacante_id}/usuario:
+    parameters:
+      - name: 'vacante_id'
+        in: path
+        required: true
+        schema:
+          type: number
+    get:
+      tags:
+        - usuario
+      summary: Retorna los usuarios que se han postulado a una determinada vacante
+      responses:
+        '200':
+          description: Retorna los usuarios que se han postulado
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Usuario'
+          links:
+            postulacion:
+              $ref: '#/components/schemas/Postulacion'
+            
+  /cargo:
+    post:
+      tags:
+        - cargo
+      summary: Permite añadir un cargo
+      operationId: addCargo
+      description: Permite añadir un cargo
+      responses:
+        '201':
+          description: Operación exitosa
+        '400':
+          description: 'Entrada inválida, objeto inválido'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cargos'
+  /cargo/{cargo_id}:
+    parameters:
+      - name: 'cargo_id'
+        in: path
+        required: true
+        schema:
+          type: number
+    get:
+      tags:
+        - cargo
+      summary: retorna un cargo
+      responses:
+        '200':
+          description: Retorna un cargo
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cargos'
+          links:
+            Vacantes:
+              $ref: '#/components/schemas/Vacantes'
+  /cargo/{cargo_id}/vacante:
+    parameters:
+      - name: 'cargo_id'
+        in: path
+        required: true
+        schema:
+          type: number
+    get:
+      tags:
+        - vacante
+      summary: Retorna las vacantes en base a un cargo
+      responses:
+        '200':
+          description: Retorna las vacantes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Vacantes'
+  /area:
+    post:
+      tags:
+        - area
+      summary: Permite crear una area
+      operationId: addArea
+      description: Permite añadir una area
+      responses:
+        '201':
+          description: Operación exitosa
+        '400':
+          description: 'Entrada inválida, objeto inválido'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Areas'
+  /area/{area_id}:
+    parameters:
+      - name: 'area_id'
+        in: path
+        required: true
+        schema:
+          type: number
+    get:
+      tags:
+        - area
+      summary: retorna una area
+      responses:
+        '200':
+          description: Retorna una area
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Areas'
+          links:
+            Vacantes:
+              $ref: '#/components/schemas/Vacantes'
+  /area/{area_id}/vacante:
+    parameters:
+      - name: 'area_id'
+        in: path
+        required: true
+        schema:
+          type: number
+    get:
+      tags:
+        - vacante
+      summary: retorna una vacante
+      responses:
+        '200':
+          description: Retorna una vacante en base al area
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Areas'
+components:
+  schemas:
+    Curriculum:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        direction:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+    Empresa:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        web_page:
+          type: string
+        description:
+          type: string
+    Usuario:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1000
+        name:
+          type: string
+          example: Juan Torres
+        password:
+          type: string
+          example: secret
+        type:
+          type: string
+          example: empleador
+        date:
+          type: string
+    Postulacion:
+      type: object
+      properties:
+        id:
+          type: number
+        responce:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+    Cargos:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+    Areas:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+    Vacantes:
+      type: object
+      properties:
+        salary:
+          type: number
+        name:
+          type: string
+        description:
+          type: string
+        cargos:
+          $ref: '#/components/schemas/Cargos' 
+        areas:
+          $ref: '#/components/schemas/Areas'
