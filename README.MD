@@ -1,6 +1,6 @@
 # API REST con Laravel
 ## Visión general
-El objetivo con ese proyecto es crear una API REST usando como base [Laravel](https://laravel.com/) y la librería [Laravel JSON-API](https://laravel-json-api.readthedocs.io/en/latest/) (es una librería que facilita la creación de APIs). La ocumentación de la API ue creada con [Swagger](https://swagger.io/) y la pueden ver haciendo clic [aquí](https://app.swaggerhub.com/apis-docs/Ackrom/bolsa_empleo/1.0.0). 
+El objetivo con ese proyecto es crear una API REST usando como base [Laravel](https://laravel.com/) y la librería [Laravel JSON-API](https://laravel-json-api.readthedocs.io/en/latest/) (es una librería que facilita la creación de APIs). La documentación de la API fue creada con [Swagger](https://swagger.io/) y la pueden ver haciendo clic [aquí](https://app.swaggerhub.com/apis-docs/Ackrom/bolsa_empleo/1.0.0). 
 
 La API permitirá recibir y manipular los datos de una  base de datos relacional. La base de datos almacenará la información de una ficticia "bolsa de empleo" (más adelante detallaré de que se trata). 
 ## Instalación
